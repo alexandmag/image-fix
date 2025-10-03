@@ -1,0 +1,8 @@
+{
+  "name": "imageFix",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "b4f399a7"
+}
