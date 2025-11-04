@@ -1,0 +1,89 @@
+🔹 1. Estrutura Conceitual
+
+Entrada (obrigatória e fixa): primeiro componente da esteira (upload/seleção de arquivo .raw).
+Fluxo de componentes dinâmicos: cada componente processa a imagem recebida do anterior.
+Saída variável: pode ser um componente de exibição ou gravação (ou até outro processamento antes disso).
+Inserção flexível: o usuário pode inserir um novo componente em qualquer posição exceto antes do input.
+
+Em resumo:
+[Entrada] → [Processamento A] → [Exibição] → [Processamento B] → [Gravação]
+
+🔹 2. Representação dos Componentes
+
+Cada "bloco" da esteira pode ser representado por um Card do Ionic (ion-card), que terá:
+Ícone ou imagem representando o tipo (entrada, processamento, exibição, gravação).
+Título/descrição (ex: "Filtro Gaussiano", "Mostrar Imagem", "Salvar em disco").
+Botões de ação (remover, editar, inserir novo componente antes/depois).
+Isso cria uma interface visual clara para o usuário.
+
+🔹 3. Estrutura Lógica
+
+Pensando em Angular, você teria algo como uma lista ordenada de componentes:
+Estrutura básica (conceitual):
+
+pipeline = [
+  { tipo: 'input', configuracao: {...} },
+  { tipo: 'processamento', configuracao: {...} },
+  { tipo: 'exibicao', configuracao: {...} },
+  { tipo: 'gravacao', configuracao: {...} }
+]
+
+Cada item da lista representa um bloco do fluxo.
+O app renderiza essa lista em sequência como ion-cards horizontais (como se fosse uma esteira).
+
+🔹 4. Fluxo de Dados
+
+O componente de entrada carrega a imagem .raw.
+Cada bloco seguinte recebe a saída do bloco anterior.
+Quando um novo bloco é inserido no meio, ele passa a receber o resultado do anterior e sua saída vai para o próximo.
+
+📌 Conceito: o pipeline sempre é linear, mas editável.
+
+🔹 5. Ações do Usuário
+
+Cada bloco teria botões para:
+Adicionar após: insere um novo componente logo depois.
+Adicionar antes: insere logo antes (não permitido no input).
+Remover: exclui o bloco (exceto o input).
+Editar configuração: abre modal ou popover para alterar parâmetros (ex: intensidade de filtro, local de gravação).
+Isso pode ser feito com IonActionSheet ou IonPopover ao clicar em "opções" no bloco.
+
+🔹 6. UI/UX no Ionic
+
+Sugestão de elementos do Ionic:
+IonCard: cada componente da esteira.
+IonGrid / IonRow / IonCol: organizar a esteira horizontalmente (scroll horizontal).
+IonButton (+): botão para adicionar novo componente.
+IonModal / IonPopover: configurar parâmetros do componente.
+IonIcon: diferenciar o tipo (entrada 📂, processamento ⚙️, exibição 👁️, gravação 💾).
+
+🔹 7. Interação Visual
+
+Para reforçar a ideia de "esteira":
+Exibir setas entre os cards (→).
+Scroll horizontal para o usuário navegar caso tenha muitos blocos.
+Destaque no componente atual em execução (quando o pipeline estiver rodando).
+
+👉 Resumindo:
+Lista ordenada de blocos (pipeline) representados como cards do Ionic, cada um com botões para inserir/editar/remover. O fluxo de dados sempre segue da esquerda para a direita, partindo do input fixo.
+
+//----------------------------------------------------------------------------------------------
+
+PipelineService → Gerencia os dados e o estado (listagem, edição, exclusão etc.).
+PipelineComponent → Renderiza a lista de pipelines e coordena as ações.
+PipelineCardComponent → Renderiza os detalhes visuais de um pipeline individual.
+HomePage → Exibe o componente app-pipeline e será a tela principal.
+
+//----------------------------------------------------------------------------------------------
+
+Fase 1 (atual):
+Criar estrutura de pipeline e renderização visual dos blocos.
+
+Fase 2:
+Adicionar capacidade de inserir, remover e reordenar blocos.
+
+Fase 3:
+Adicionar lógica real de processamento de imagem (cada bloco com função específica).
+
+Fase 4:
+Permitir salvar/carregar pipelines customizados (JSON no LocalStorage ou GitHub).

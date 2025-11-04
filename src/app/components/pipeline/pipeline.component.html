@@ -1,0 +1,21 @@
+<ion-content>
+  <ion-list>
+    <ng-container *ngFor="let bloco of pipelineBlocks; let i = index">
+      <!-- card -->
+      <ion-item lines="none">
+        <app-pipeline-card
+          [bloco]="bloco"
+          (edit)="editBlock($event)"
+          (remove)="removeBlock($event)">
+        </app-pipeline-card>
+      </ion-item>
+
+      <!-- botão + inserção (após o bloco i) -->
+      <ion-item lines="none" class="insert-item">
+        <ion-button (click)="addBlockAt(i)">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+</ion-content>
