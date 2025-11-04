@@ -1,8 +1,12 @@
 ion-content {
-    --background: linear-gradient(to bottom, #FFCC33, #FFBF00);
+    // --background: linear-gradient(to bottom, #FFCC33, #FFBF00);
     // --background: #CC9900;
 
     ion-list {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
         ion-item {
             --background: #00000000;
         }
@@ -14,28 +18,31 @@ ion-content {
 }
 
 .insert-item {
-    --padding-start: 40%;
-    --inner-padding-end: 0;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 
+    transform: translateX(calc(50% - 38px));
+
     ion-button {
-        width: 20%;
+        width: fit-content;
         height: 38px;
         padding: 0;
-        --background: #CC9900;
+        // --background: #CC9900;
         display: flex;
         align-items: center;
         justify-content: center;
+
         ion-icon {
             font-size: 1.5rem;
-            color: #ffefd4;
+            // color: #ffefd4;
         }
     }
 }
 
-
 ion-item app-pipeline-card {
     width: 100%;
+    display: flex;
+    justify-content: center;
 }

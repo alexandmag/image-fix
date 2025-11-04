@@ -1,8 +1,9 @@
 ion-card {
-    --background: #ffeed8;
-    --color: #725400;
+    // --background: #ffeed8;
+    // --color: #725400;
 
-    width: 90%;
+    width: 100%;
+    max-width: 800px;
     height: 220px; 
 
     border-radius: 0;
@@ -15,12 +16,12 @@ ion-card {
     border-radius: 16px;
 
     ion-card-title {
-        --color: #725400;
+        // --color: #725400;
         text-align: center;
     }
 
     ion-card-subtitle {
-        --color: #9e7600;
+        // --color: #9e7600;
         text-align: center;
     }
 }
