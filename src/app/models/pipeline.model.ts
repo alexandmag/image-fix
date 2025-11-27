@@ -8,13 +8,19 @@ export type ProcessamentoType =
     | 'mediana'
     | 'laplaciano';
 
+export interface PipelineImage {
+    data: Uint8Array;   // pixels
+    width: number;
+    height: number;
+}
+
 export interface PipelineBlock {
-    id: number;                 // Identificador único
-    tipo: PipelineBlockType;    // Tipo do bloco
-    nome: string;               // Ex: "Entrada RAW", "Filtro Gaussiano"
-    processo?: ProcessamentoType; // Tipos de processos
-    configuracao?: any;         // Parâmetros específicos (intensidade, path, etc.)
-    resultado?: any;            // Dados da imagem após o processamento
+    id: number;                     // Identificador único
+    tipo: PipelineBlockType;        // Tipo do bloco
+    nome: string;                   // Ex: "Entrada RAW", "Filtro Gaussiano"
+    processo?: ProcessamentoType;   // Tipos de processos
+    configuracao?: any;             // Parâmetros específicos (intensidade, path, etc.)
+    imagem?: PipelineImage;         // Imagem associada a este bloco
 }
 
 export interface Pipeline {

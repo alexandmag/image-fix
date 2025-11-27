@@ -24,6 +24,15 @@
       <ion-icon slot="start" name="create-outline"></ion-icon> Editar
     </ion-button>
 
+    <ion-button *ngIf="bloco.tipo === 'exibicao'" (click)="onShowImage()">
+      <ion-icon slot="start" name="eye-outline"></ion-icon>
+      Mostrar imagem
+    </ion-button>
+
+    <div *ngIf="imageUrl" style="margin-top:10px; text-align:center;">
+      <img [src]="imageUrl" [alt]="imageName || 'Imagem'" width="128" height="128" />
+    </div>
+
     <ion-button
       fill="clear"
       color="danger"
@@ -31,5 +40,17 @@
       (click)="onRemove()">
       <ion-icon slot="start" name="trash-outline"></ion-icon> Remover
     </ion-button>
+  </ion-card-content>
+
+  <ion-card-content *ngIf="bloco.tipo === 'input'">
+    <ion-button fill="solid" color="primary" size="small" (click)="onSelectImage()">
+      <ion-icon slot="start" name="image-outline"></ion-icon>
+      Carregar Imagem (.raw)
+    </ion-button>
+
+    <p *ngIf="imageName" style="margin-top: .5rem; font-size: 0.9em;">
+      <ion-icon name="checkmark-circle-outline" color="success"></ion-icon>
+      {{ imageName }}
+    </p>
   </ion-card-content>
 </ion-card>

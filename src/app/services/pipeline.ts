@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Pipeline, PipelineBlock, ProcessamentoType } from '../models/pipeline.model';
+import { Pipeline, PipelineBlock, PipelineImage, ProcessamentoType } from '../models/pipeline.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ export class PipelineService {
     nome: 'Pipeline Principal',
     blocos: [
       { id: 1, tipo: 'input', nome: 'Entrada (.raw)' },
-      { id: 2, tipo: 'processamento', nome: 'Filtro Gaussiano' },
+      { id: 2, tipo: 'processamento', nome: 'Novo Processamento' },
       { id: 3, tipo: 'exibicao', nome: 'Visualização da Imagem' },
       { id: 4, tipo: 'gravacao', nome: 'Salvar em Disco' },
     ],
@@ -20,11 +20,16 @@ export class PipelineService {
 
   pipeline$ = this.pipelineSubject.asObservable();
 
+  // Retorna o pipeline atual
+  getPipeline(): Pipeline {
+    return this.pipelineSubject.value;
+  }
+  
   constructor() {}
 
-  // Retorna os blocos atuais
-  getBlocks(): PipelineBlock[] {
-    return this.pipelineSubject.value.blocos;
+  // Atualiza o pipeline reativamente
+  private update(blocos: PipelineBlock[]) {
+    this.pipelineSubject.next({ ...this.pipelineSubject.value, blocos });
   }
 
   // Gera ID incremental simples
@@ -35,27 +40,25 @@ export class PipelineService {
 
   // Ações
   addBlockAt(index: number, newBlock: PipelineBlock) {
-    const blocos = [...this.pipelineSubject.value.blocos];
+    const blocos = [...this.getPipeline().blocos];
     blocos.splice(index, 0, newBlock);
-    this.pipelineSubject.next({ ...this.pipelineSubject.value, blocos });
+    this.update(blocos);
   }
 
   removeBlock(id: number) {
-    const blocos = this.pipelineSubject.value.blocos.filter(b => {
-      if (b.tipo === 'input') return true;
-      return b.id !== id;
-    });
-
-    this.pipelineSubject.next({ ...this.pipelineSubject.value, blocos });
+    const blocos = this.getPipeline().blocos.filter(b =>
+      b.tipo === 'input' ? true : b.id !== id
+    );
+    this.update(blocos);
   }
 
   editBlock(id: number, processo: ProcessamentoType) {
-    const blocos = this.pipelineSubject.value.blocos.map(b =>
+    const blocos = this.getPipeline().blocos.map(b =>
       b.id === id
         ? { ...b, processo, nome: this.getNomeFromProcesso(processo) }
         : b
     );
-    this.pipelineSubject.next({ ...this.pipelineSubject.value, blocos });
+    this.update(blocos);
   }
 
   private getNomeFromProcesso(processo: ProcessamentoType): string {
@@ -68,5 +71,18 @@ export class PipelineService {
       case 'laplaciano': return 'Filtro Laplaciano';
       default: return 'Processamento';
     }
+  }
+
+  // Define uma imagem em qualquer bloco
+  setBlockImage(id: number, imagem: PipelineImage) {
+    const blocos = this.getPipeline().blocos.map(b =>
+      b.id === id ? { ...b, imagem } : b
+    );
+    this.update(blocos);
+    console.log("Blocos atualizados no pipeline:", this.getPipeline().blocos);
+  }
+
+  getBlockImage(id: number): PipelineImage | undefined {
+    return this.getPipeline().blocos.find(b => b.id === id)?.imagem;
   }
 }
