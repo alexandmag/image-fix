@@ -79,10 +79,12 @@ export class PipelineService {
       b.id === id ? { ...b, imagem } : b
     );
     this.update(blocos);
+    console.log("setBlockImage:", imagem);
     console.log("Blocos atualizados no pipeline:", this.getPipeline().blocos);
   }
 
   getBlockImage(id: number): PipelineImage | undefined {
+    console.log("getBlockImage",this.getPipeline().blocos.find(b => b.id === id)?.imagem)
     return this.getPipeline().blocos.find(b => b.id === id)?.imagem;
   }
 }

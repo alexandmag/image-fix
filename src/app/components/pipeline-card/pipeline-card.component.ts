@@ -25,7 +25,6 @@ export class PipelineCardComponent implements OnInit, OnDestroy {
   constructor(private pipelineService: PipelineService) {}
 
   ngOnInit() {
-    // Atualiza automaticamente o bloco local quando o pipeline mudar
     this.sub = this.pipelineService.pipeline$.subscribe(pipeline => {
       const atualizado = pipeline.blocos.find(b => b.id === this.bloco.id);
       if (atualizado) this.bloco = atualizado;
@@ -59,7 +58,6 @@ export class PipelineCardComponent implements OnInit, OnDestroy {
       if (!file) return;
 
       this.imageName = file.name;
-      console.log("onSelectImage File", file);
 
       const arrayBuffer = await file.arrayBuffer();
       const uint8Array = new Uint8Array(arrayBuffer);
@@ -77,7 +75,7 @@ export class PipelineCardComponent implements OnInit, OnDestroy {
   }
 
   onShowImage() {
-    const imagem = this.pipelineService.getBlockImage(this.bloco.id);
+    const imagem = this.pipelineService.getBlockImage(1);
     console.log("onShowImage", imagem);
     if (!imagem) return;
 
